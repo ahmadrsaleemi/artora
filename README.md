@@ -1,6 +1,6 @@
 # Artora
 
-**Artora** is a Laravel-based platform designed to bring creative people together to organize, plan, and participate in creative projects such as plays, concerts, theatre performances, and more. Users can collaborate on project planning and purchase tickets for events all in one place.
+**Artora** is a Laravel and React typescript based platform designed to bring creative people together to organize, plan, and participate in creative projects such as plays, concerts, theatre performances, and more. Users can collaborate on project planning and purchase tickets for events all in one place.
 
 ## Features
 
