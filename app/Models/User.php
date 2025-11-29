@@ -14,12 +14,12 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
-        'userEmail', // Custom email column
-        'userPassword', // Custom password column
+        'email', // Custom email column
+        'password', // Custom password column
     ];
 
     protected $hidden = [
-        'userPassword', // Hide custom password column
+        'password', // Hide custom password column
         'remember_token',
     ];
 
@@ -36,12 +36,12 @@ class User extends Authenticatable
     // Return the email used for login
     public function getEmailForAuthentication()
     {
-        return $this->userEmail; // Use custom email column
+        return $this->email; // Use custom email column
     }
 
     // Ensure the password column is correctly identified
     public function getAuthPassword()
     {
-        return $this->userPassword; // Custom password column
+        return $this->password; // Custom password column
     }
 }

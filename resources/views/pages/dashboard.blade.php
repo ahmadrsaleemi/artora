@@ -235,7 +235,7 @@
                             <div class="col-7 d-flex align-items-center">
                                 <div class="numbers">
                                     <p class="card-category">Total Events</p>
-                                    <h4 class="card-title">{{ \App\Models\Event::where('userId', '=', auth()->id())->count() }}</h4>
+                                    <h4 class="card-title">{{ \App\Models\Event::count() }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -254,7 +254,7 @@
                             <div class="col-7 d-flex align-items-center">
                                 <div class="numbers">
                                     <p class="card-category">Upcoming Events</p>
-                                    <h4 class="card-title">{{ \App\Models\Event::where('eventDate','>',date('Y-m-d'))->where('userId', '=', auth()->id())->count() }}</h4>
+                                    <h4 class="card-title">{{ \App\Models\Event::where('eventDate','>',date('Y-m-d'))->count() }}</h4>
                                 </div>
                             </div>
                         </div>

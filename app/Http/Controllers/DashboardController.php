@@ -17,14 +17,14 @@ class DashboardController extends Controller
     function dashboard()
     {
         $userId = auth()->id();
-        $allEvents=Event::where('eventDate','>',date('Y-m-d'))->where('userId', '=', $userId)->orderBy('eid','desc')->get();
+        $allEvents=Event::where('eventDate','>',date('Y-m-d'))->orderBy('eid','desc')->get();
         $eventType=EventType::all();
         $TicketTypes =  TicketType::get();
 
-        $upcomingEvents = Event::where('eventDate','>',date('Y-m-d'))->where('userId', '=', $userId)->get()->pluck('eid')->toArray();
+        $upcomingEvents = Event::where('eventDate','>',date('Y-m-d'))->get()->pluck('eid')->toArray();
 
-        $totalTickets = Tickets::whereIn('eventId',$upcomingEvents)->where('userId', '=', $userId)->count();
-        $totalTicketsSold = Tickets::whereIn('eventId',$upcomingEvents)->where('userId', '=', $userId)->where('holder_name','!=','')->count();
+        $totalTickets = Tickets::whereIn('eventId',$upcomingEvents)->count();
+        $totalTicketsSold = Tickets::whereIn('eventId',$upcomingEvents)->where('holder_name','!=','')->count();
 
         return view('pages.dashboard', compact('allEvents','eventType','TicketTypes','totalTickets', 'totalTicketsSold'));
     }

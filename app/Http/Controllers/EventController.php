@@ -16,6 +16,11 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class EventController extends Controller
 {
+    function viewEvent()
+    {
+        $allEvents = Event::orderBy('eid', 'desc')->get();
+        return view('pages.event.viewEvent', compact('allEvents'));
+    }
     function addEvent()
     {
         $userId = auth()->id();
@@ -80,40 +85,45 @@ class EventController extends Controller
         //$eventDetails->save();
 
         $ticketDivision = $request->ticketDivision;
-        $seatingPlan = [];
+        // $seatingPlan = [];
         
         $total = 0;
         $tableNumber = 1;
-        foreach ($request->typeType['type'] as $i => $id)
+
+        foreach ($request->ticket['type'] as $i => $id)
         {
-            $_TicketType = TicketType::find($id);
-            $totalTablesToBeCreated = ceil($request->typeType['quantity'][$i] / $ticketDivision);
-            for($j = 1; $j <= $totalTablesToBeCreated; $j++)
-            {
-                $seatingPlan[$tableNumber] = [
-                    "name" => "Not Applicable",
-                    "number" => $tableNumber,
-                    "capacity" => $ticketDivision,
-                    "tableType" => $_TicketType->ticketType
-                ];
-                $tableNumber += 1;
-            }
+            $_TicketType = TicketType::find($id); //this should be fixed
+
+            // var_dump($_TicketType);
+            // $totalTablesToBeCreated = ceil($request->ticket['quantity'][$i] / $ticketDivision);
+            // for($j = 1; $j <= $totalTablesToBeCreated; $j++)
+            // {
+            //     $seatingPlan[$tableNumber] = [
+            //         "name" => "Not Applicable",
+            //         "number" => $tableNumber,
+            //         "capacity" => $ticketDivision,
+            //         "tableType" => $_TicketType->ticketType
+            //     ];
+            //     $tableNumber += 1;
+            // }
 
             $eventTicketType = new EventTicketType();
             $eventTicketType->ticketType = $_TicketType->ticketType ?? '';
             $eventTicketType->event_id = $eventId;
             $eventTicketType->type_id = $id;
-            $eventTicketType->tickets = $request->typeType['quantity'][$i];
-            $eventTicketType->price = $request->typeType['price'][$i];
+            $eventTicketType->tickets = $request->ticket['quantity'][$i];
+            $eventTicketType->price = $request->ticket['price'][$i];
             $eventTicketType->platform = 0;
             $eventTicketType->userId = auth()->id();
             $eventTicketType->save();
-            $total += $request->typeType['quantity'][$i];
+            $total += $request->ticket['quantity'][$i];
+
+            $i += 1;
         }
 
         
-        $txtSeatingPlan = json_encode($seatingPlan, true);
-        $eventDetails->seatingplan = $txtSeatingPlan;
+        // $txtSeatingPlan = json_encode($seatingPlan, true);
+        // $eventDetails->seatingplan = $txtSeatingPlan;
 
         $eventDetails->numberOfTickets = $total;
         $eventDetails->save();
@@ -318,18 +328,18 @@ class EventController extends Controller
         $ticketDivision = $request->ticketDivision;
 
         $total = 0;
-        foreach ($request->typeType['type'] as $i => $id) {
+        foreach ($request->ticket['type'] as $i => $id) {
             $_TicketType = TicketType::find($id);
             $eventTicketType = new EventTicketType();
             $eventTicketType->ticketType = $_TicketType->ticketType ?? '';
             $eventTicketType->event_id = $eventId;
             $eventTicketType->type_id = $id;
-            $eventTicketType->tickets = $request->typeType['quantity'][$i];
-            $eventTicketType->price = $request->typeType['price'][$i];
+            $eventTicketType->tickets = $request->ticket['quantity'][$i];
+            $eventTicketType->price = $request->ticket['price'][$i];
             $eventTicketType->save();
-            $total += $request->typeType['quantity'][$i];
+            $total += $request->ticket['quantity'][$i];
 
-            $totalTablesToBeCreated = ceil($request->typeType['quantity'][$i] / $ticketDivision);
+            $totalTablesToBeCreated = ceil($request->ticket['quantity'][$i] / $ticketDivision);
             for($j = 1; $j <= $totalTablesToBeCreated; $j++)
             {
                 $seatingPlan[$tableNumber] = [

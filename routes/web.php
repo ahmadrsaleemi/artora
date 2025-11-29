@@ -39,6 +39,7 @@ Route::get('/user/View-User',[UserController::class, 'viewUser'])->middleware('a
 Route::get('/deleteUser/{id}',[UserController::class, 'deleteUser'])->middleware('auth');
 Route::post('updateUser',[UserController::class, 'updateUser'])->middleware('auth');
 Route::get('/event/Add-Event', [EventController::class, 'addEvent'])->middleware('auth');
+Route::get('/event/View-Event', [EventController::class, 'viewEvent'])->middleware('auth');
 Route::post('/event/AddSeatsToTable', [EventController::class, 'addSeatsToTable'])->middleware('auth');
 Route::post('registerEvent',[EventController::class, 'registerEvent'])->name('register_event')->middleware('auth');
 Route::get('/event/updateEventPage/{id}',[EventController::class, 'updateEventPage'])->middleware('auth');
