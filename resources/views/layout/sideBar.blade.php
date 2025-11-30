@@ -11,7 +11,7 @@
 			
 			
 			<li class="sub-menu">
-				<a href="/event/View-Event">
+				<a href="/concept/View-Concept">
 					<i class="fa fa-calendar-o"></i>
 					<span>Concept</span>
 				</a>

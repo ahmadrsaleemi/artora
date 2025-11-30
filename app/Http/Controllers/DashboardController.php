@@ -17,7 +17,7 @@ class DashboardController extends Controller
     function dashboard()
     {
         $userId = auth()->id();
-        $allEvents=Event::where('eventDate','>',date('Y-m-d'))->orderBy('eid','desc')->get();
+        $allEvents=Event::orderBy('eid','desc')->get();
         $eventType=EventType::all();
         $TicketTypes =  TicketType::get();
 

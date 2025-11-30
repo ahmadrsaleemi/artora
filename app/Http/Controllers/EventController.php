@@ -19,7 +19,7 @@ class EventController extends Controller
     function viewEvent()
     {
         $allEvents = Event::orderBy('eid', 'desc')->get();
-        return view('pages.event.viewEvent', compact('allEvents'));
+        return view('pages.concept.viewConcept', compact('allEvents'));
     }
     function addEvent()
     {
@@ -40,7 +40,7 @@ class EventController extends Controller
 
         $eventType=EventType::all();
         $TicketTypes =  TicketType::get();
-        return view('pages.event.addEvent', compact('allEvents','eventType','TicketTypes'));
+        return view('pages.concept.addConcept', compact('allEvents','eventType','TicketTypes'));
     }
    
 
@@ -180,7 +180,7 @@ class EventController extends Controller
         $eventDetailsData=EventDetails::where('eid',$id)->get();
         $eventType=EventType::all();
         $TicketTypes =  TicketType::get();
-        return view('pages.event.updateEventPage', compact('eventData','eventDetailsData','eventType','TicketTypes'));
+        return view('pages.concept.updateConceptPage', compact('eventData','eventDetailsData','eventType','TicketTypes'));
     }
 
     function addSeatsToTable(Request $request)
@@ -366,7 +366,7 @@ class EventController extends Controller
 
     function eventTypePage()
     {
-        return view('pages.event.eventType');
+        return view('pages.concept.conceptType');
     }
     function addEventType(Request $request)
     {

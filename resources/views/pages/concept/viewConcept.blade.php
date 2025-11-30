@@ -4,7 +4,7 @@
 	<section class="wrapper">
 			<header class="card-header d-flex justify-content-between align-items-center">
 			<span>View Concepts</span>
-			<a href="/event/Add-Event" class="btn btn-primary btn-sm">Add Concept</a>
+			<a href="/concept/Add-Concept" class="btn btn-primary btn-sm">Add Concept</a>
 		</header>
 		<div class="card-body">
 			<div class="table-responsive">
@@ -36,7 +36,7 @@
 
 							<td>
 
-								<a href="updateEventPage/{{ $allEvent->eid }}" class="btn btn-primary"><i
+								<a href="updateConceptPage/{{ $allEvent->eid }}" class="btn btn-primary"><i
 										class="fa fa-edit"></i></a>
 								<a href="deleteEvent/{{ $allEvent->eid }}" class="btn btn-danger"
 									onclick="return confirm('Are you sure you want to delete?');"><i

@@ -38,11 +38,11 @@ Route::post('registerUser',[UserController::class, 'registerUser'])->middleware(
 Route::get('/user/View-User',[UserController::class, 'viewUser'])->middleware('auth')->name('view-user');
 Route::get('/deleteUser/{id}',[UserController::class, 'deleteUser'])->middleware('auth');
 Route::post('updateUser',[UserController::class, 'updateUser'])->middleware('auth');
-Route::get('/event/Add-Event', [EventController::class, 'addEvent'])->middleware('auth');
-Route::get('/event/View-Event', [EventController::class, 'viewEvent'])->middleware('auth');
-Route::post('/event/AddSeatsToTable', [EventController::class, 'addSeatsToTable'])->middleware('auth');
+Route::get('/concept/Add-Concept', [EventController::class, 'addEvent'])->middleware('auth');
+Route::get('/concept/View-Concept', [EventController::class, 'viewEvent'])->middleware('auth');
+Route::post('/concept/AddSeatsToTable', [EventController::class, 'addSeatsToTable'])->middleware('auth');
 Route::post('registerEvent',[EventController::class, 'registerEvent'])->name('register_event')->middleware('auth');
-Route::get('/event/updateEventPage/{id}',[EventController::class, 'updateEventPage'])->middleware('auth');
+Route::get('/concept/updateConceptPage/{id}',[EventController::class, 'updateEventPage'])->middleware('auth');
 Route::post('updateEvent',[EventController::class, 'updateEvent'])->middleware('auth');
 Route::post('deleteTable',[EventController::class, 'deleteTable'])->name('delete-table-event-id')->middleware('auth');
 Route::get('/event/deleteEvent/{id}',[EventController::class, 'deleteEvent'])->middleware('auth');
