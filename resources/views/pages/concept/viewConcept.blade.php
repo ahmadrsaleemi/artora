@@ -4,7 +4,7 @@
 	<section class="wrapper">
 			<header class="card-header d-flex justify-content-between align-items-center">
 			<span>View Concepts</span>
-			<a href="/concept/Add-Concept" class="btn btn-primary btn-sm">Add Concept</a>
+			<a href="/concept/add" class="btn btn-primary btn-sm">Add Concept</a>
 		</header>
 		<div class="card-body">
 			<div class="table-responsive">
