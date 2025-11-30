@@ -73,15 +73,13 @@ label {
 							<script> document.addEventListener("DOMContentLoaded", () => { toastr.info('{{session('message')}}'); }); </script>
 						</div>
 						@endif
-						<h3>Add Event</h3>
 					</header>
 					<div class="card-body">
+						<h4>Concept Details</h4>
 						<form method="POST" action="{{route('register_event')}}">
 							@csrf
 							<div class="form-row align-items-center">
-
 								<div class="col-6">
-									<label for="eventTitle" class="form-label">Event Title</label>
 									<div class="input-group mb-2">
 										<div class="input-group-prepend">
 											<div class="input-group-text"><i class="fa fa-calendar-o"></i></div>
@@ -218,7 +216,7 @@ label {
 
 								<div class="col-12">
 									<hr/>
-									<h4>Event Organizer</h4>
+									<h4>Concept Organizer</h4>
 									<div class="row" >
 										<div class="col-12">
 											<label for="event_organizer_Description" class="form-label">Description</label>
