@@ -1,6 +1,12 @@
 @extends('layout.parent')
 @push('script')
 <script type="text/javascript">
+
+
+	document.getElementById("eventType").addEventListener("change", function () {
+		document.getElementById("event_type_id").value = this.value;
+	});
+
 	const input = document.getElementById("gallery_input");
 	const container = document.getElementById("gallery_container");
 	const orderInput = document.getElementById("image_order");
@@ -148,6 +154,7 @@ label {
 							@csrf
 							<div class="form-row align-items-center">
 								<div class="col-6">
+									<label for="headline" class="form-label">Title</label>
 									<div class="input-group mb-2">
 										<div class="input-group-prepend">
 											<div class="input-group-text"><i class="fa fa-calendar-o"></i></div>
@@ -158,17 +165,17 @@ label {
 								</div>
 
 								<div class="col-6">
-									<label for="headline" class="form-label">Headline</label>
+									<label for="subtitle" class="form-label">Subtitle</label>
 									<div class="input-group mb-2">
 										<div class="input-group-prepend">
 											<div class="input-group-text"><i class="fa fa-calendar-o"></i></div>
 										</div>
-										<input type="text" class="form-control" id="headline" placeholder="Headline"
-											name="headline" required>
+										<input type="text" class="form-control" id="subtitle" placeholder="Enter subtitle"
+											name="subtitle" required>
 									</div>
 								</div>
 
-								<div class="col-6">
+								<!-- <div class="col-6">
 									<label for="eventContactEmail" class="form-label">Contact Email</label>
 									<div class="input-group mb-2">
 										<div class="input-group-prepend">
@@ -177,9 +184,9 @@ label {
 										<input type="email" class="form-control" id="eventContactEmail"
 											placeholder="Contact Email" name="eventContactEmail" required>
 									</div>
-								</div>
+								</div> -->
 
-								<div class="col-6">
+								<!-- <div class="col-6">
 									<label for="eventContactNumber" class="form-label">Contact Number</label>
 									<div class="input-group mb-2">
 										<div class="input-group-prepend">
@@ -188,7 +195,7 @@ label {
 										<input type="tel" class="form-control" id="eventContactNumber"
 											placeholder="Contact Number" name="eventContactNumber" required>
 									</div>
-								</div>
+								</div> -->
 
 								<div class="col-12">
 									<label for="eventDescription" class="form-label">Description</label>
@@ -201,7 +208,7 @@ label {
 									</div>
 								</div>
 
-								<div class="col-12">
+								<div class="col-6">
 									<label for="eventAddress" class="form-label">Address</label>
 									<div class="input-group mb-2">
 										<div class="input-group-prepend">
@@ -222,7 +229,7 @@ label {
 											name="eventDate" required>
 									</div>
 								</div>
-
+								<!--
 								<div class="col-6">
 									<label for="endDate" class="form-label">End Date</label>
 									<div class="input-group mb-2">
@@ -232,29 +239,52 @@ label {
 										<input type="datetime-local" class="form-control" id="endDate" name="endDate"
 											required>
 									</div>
-								</div>
+								</div> -->
 
 
 							</div>
 
 							<div class="form-row align-items-center">
-								<div class="col-12">
+								<div class="col-4">
 									<label for="eventType" class="form-label">Event Category</label>
 									<div class="input-group mb-2">
 										<div class="input-group-prepend">
 											<div class="input-group-text"><i class="fa fa-exchange"></i></div>
 										</div>
+										<input type="hidden" id="event_type_id" name="event_type_id" />
 										<select name="eventType" id="eventType" class="form-control" required>
 											<option value="" selected>Select Category</option>
 											@foreach ($eventType as $eventTypes)
-											<option value="{{ $eventTypes->eventType }}">{{ $eventTypes->eventType }}
+											<option value="{{ $eventTypes->etid }}">{{ $eventTypes->eventType }}
 											</option>
 											@endforeach
 										</select>
 									</div>
 								</div>
 
-								<div class="col-12">
+								<div class="col-4">
+									<label for="eventType" class="form-label">Event Capacity</label>
+									<div class="input-group mb-2">
+										<div class="input-group-prepend">
+											<div class="input-group-text"><i class="fa fa-map-marker"></i></div>
+										</div>
+										<input class="form-control" id="eventCapacity" placeholder="Enter event capcity"
+										name="eventCapacity" type="text" required />
+									</div>
+								</div>
+
+								<div class="col-4">
+									<label for="eventType" class="form-label">Event Ticket Price</label>
+									<div class="input-group mb-2">
+										<div class="input-group-prepend">
+											<div class="input-group-text"><i class="fa fa-map-marker"></i></div>
+										</div>
+										<input class="form-control" id="eventTicketPrice" placeholder="Enter event ticket price"
+										name="eventTicketPrice" type="text" required />
+									</div>
+								</div>
+
+								<!-- <div class="col-12">
 									<hr/>
 									<h4>Location</h4>
 									<div class="row" >
@@ -280,7 +310,7 @@ label {
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 
 								<div class="col-12">
 									<hr/>
@@ -310,7 +340,7 @@ label {
 									</div>
 								</div>
 
-								<div class="col-12">
+								<!-- <div class="col-12">
 									<hr/>
 									<h4>Concept Organizer</h4>
 									<div class="row" >
@@ -370,7 +400,7 @@ label {
 										</div>
 									</div>
 									<hr/>
-								</div>
+								</div> -->
 
 								<!-- <div class="col-12">
 									<label for="eventAccess" class="form-label">Event Access</label>
@@ -398,36 +428,6 @@ label {
 											oninput="calculateSeats()">
 									</div>
 								</div> -->
-
-								<div class="col-12 ticketTypes">
-									<!-- <label class="form-label">Tickets</label> -->
-									<h4>Ticket Details</h4>
-									<div class="input-group mb-2">
-										<div class="input-group-prepend">
-											<div class="input-group-text">Type</div>
-										</div>
-										<select name="ticket[type][]" class="form-control form-select" required>
-											<option value="" onchange="calculateSeats()">Ticket Type</option>
-											<?php foreach ($TicketTypes as $TicketType): ?>
-											<option value="{{ $TicketType->id }}">{{ $TicketType->ticketType }}</option>
-											<?php endforeach ?>
-										</select>
-										<div class="input-group-prepend">
-											<div class="input-group-text">Quantity</div>
-										</div>
-										<input required type="number" class="form-control" placeholder="Quantity"
-											name="ticket[quantity][]" onkeyup="calculateSeats()">
-										<div class="input-group-prepend">
-											<div class="input-group-text">Price</div>
-										</div>
-										<input required type="number" class="form-control" placeholder="Price"
-											name="ticket[price][]">
-										<div class="col-2 text-center">
-											<button type="button" onclick="addTicketType(this)"
-												class="btn btn-success">Add Ticket Type</button>
-										</div>
-									</div>
-								</div>
 
 								<div class="col-12">
 									<button type="submit" class="btn btn-primary mb-2 px-5">Create</button>

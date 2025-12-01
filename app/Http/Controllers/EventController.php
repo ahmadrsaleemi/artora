@@ -54,25 +54,29 @@ class EventController extends Controller
         $gallery_images_order = json_decode($request->image_order, true);
         
         $createEvent=new Event;
+        $createEvent->userId = auth()->id();
         $createEvent->title=$request->eventTitle;
+        $createEvent->subtitle=$request->subtitle;
         $createEvent->description=$request->eventDescription;
         $createEvent->address=$request->eventAddress;
-        $createEvent->contactNumber=$request->eventContactNumber;
-        $createEvent->contactEmail=$request->eventContactEmail;
-        $createEvent->eventOrganizerId=Auth::id();
         $createEvent->eventStatus=0;
         $createEvent->ticketStatus=0;
-        $createEvent->eventDate=$request->eventDate;
-        $createEvent->headline=$request->headline;
-        $createEvent->endDate=$request->endDate;
-        $createEvent->venue_name=$request->venue_name;
-        $createEvent->venue_address=$request->venue_address;
-        $createEvent->event_organizer_Description=$request->event_organizer_Description;
-        $createEvent->event_organizer_phone=$request->event_organizer_phone;
-        $createEvent->event_organizer_email=$request->event_organizer_email;
-        $createEvent->event_organizer_website=$request->event_organizer_website;
-        $createEvent->event_organizer_social_media=$request->event_organizer_social_media;
-        $createEvent->userId = auth()->id();
+        $createEvent->capacity = $request->eventCapacity;
+        $createEvent->ticketprice = $request->eventTicketPrice;
+        $createEvent->event_type_id = $request->event_type_id;
+        $createEvent->date=$request->eventDate;
+        // $createEvent->headline=$request->headline;
+        // $createEvent->contactNumber=$request->eventContactNumber;
+        // $createEvent->contactEmail=$request->eventContactEmail;
+        // $createEvent->eventOrganizerId=Auth::id();
+        // $createEvent->endDate=$request->endDate;
+        // $createEvent->venue_name=$request->venue_name;
+        // $createEvent->venue_address=$request->venue_address;
+        // $createEvent->event_organizer_Description=$request->event_organizer_Description;
+        // $createEvent->event_organizer_phone=$request->event_organizer_phone;
+        // $createEvent->event_organizer_email=$request->event_organizer_email;
+        // $createEvent->event_organizer_website=$request->event_organizer_website;
+        // $createEvent->event_organizer_social_media=$request->event_organizer_social_media;
         $createEvent->save();
         $eventId=$createEvent->eid;
 
@@ -117,60 +121,60 @@ class EventController extends Controller
 
         $createEvent->save();
 
-        $eventDetails=new EventDetails;
-        $eventDetails->numberOfTickets = isset($request->noOfTickets) && !empty($request->noOfTickets) ? $request->noOfTickets : 0;
-        $eventDetails->eventAccess=isset($request->eventAccess) && !empty($request->eventAccess) ? $request->eventAccess : 0;
-        $eventDetails->ticketPrice=isset($request->ticketPrice) && !empty($request->ticketPrice) ? $request->ticketPrice : 0;
-        $eventDetails->eventType=isset($request->eventType) && !empty($request->eventType) ? $request->eventType : '';
-        $eventDetails->seatArrangement=isset($request->seatArrange) && !empty($request->seatArrange) ? $request->seatArrange : '';
-        $eventDetails->ticketDivision=isset($request->ticketDivision) && !empty($request->ticketDivision) ? $request->ticketDivision : 0;
-        $eventDetails->eid=$eventId;
-        $eventDetails->userId = auth()->id();
-        //$eventDetails->save();
+        // $eventDetails=new EventDetails;
+        // $eventDetails->numberOfTickets = isset($request->noOfTickets) && !empty($request->noOfTickets) ? $request->noOfTickets : 0;
+        // $eventDetails->eventAccess=isset($request->eventAccess) && !empty($request->eventAccess) ? $request->eventAccess : 0;
+        // $eventDetails->ticketPrice=isset($request->ticketPrice) && !empty($request->ticketPrice) ? $request->ticketPrice : 0;
+        // $eventDetails->eventType=isset($request->eventType) && !empty($request->eventType) ? $request->eventType : '';
+        // $eventDetails->seatArrangement=isset($request->seatArrange) && !empty($request->seatArrange) ? $request->seatArrange : '';
+        // $eventDetails->ticketDivision=isset($request->ticketDivision) && !empty($request->ticketDivision) ? $request->ticketDivision : 0;
+        // $eventDetails->eid=$eventId;
+        // $eventDetails->userId = auth()->id();
+        // //$eventDetails->save();
 
-        $ticketDivision = $request->ticketDivision;
-        // $seatingPlan = [];
+        // $ticketDivision = $request->ticketDivision;
+        // // $seatingPlan = [];
         
-        $total = 0;
-        $tableNumber = 1;
+        // $total = 0;
+        // $tableNumber = 1;
 
-        foreach ($request->ticket['type'] as $i => $id)
-        {
-            $_TicketType = TicketType::find($id); //this should be fixed
+        // foreach ($request->ticket['type'] as $i => $id)
+        // {
+        //     $_TicketType = TicketType::find($id); //this should be fixed
 
-            // var_dump($_TicketType);
-            // $totalTablesToBeCreated = ceil($request->ticket['quantity'][$i] / $ticketDivision);
-            // for($j = 1; $j <= $totalTablesToBeCreated; $j++)
-            // {
-            //     $seatingPlan[$tableNumber] = [
-            //         "name" => "Not Applicable",
-            //         "number" => $tableNumber,
-            //         "capacity" => $ticketDivision,
-            //         "tableType" => $_TicketType->ticketType
-            //     ];
-            //     $tableNumber += 1;
-            // }
+        //     // var_dump($_TicketType);
+        //     // $totalTablesToBeCreated = ceil($request->ticket['quantity'][$i] / $ticketDivision);
+        //     // for($j = 1; $j <= $totalTablesToBeCreated; $j++)
+        //     // {
+        //     //     $seatingPlan[$tableNumber] = [
+        //     //         "name" => "Not Applicable",
+        //     //         "number" => $tableNumber,
+        //     //         "capacity" => $ticketDivision,
+        //     //         "tableType" => $_TicketType->ticketType
+        //     //     ];
+        //     //     $tableNumber += 1;
+        //     // }
 
-            $eventTicketType = new EventTicketType();
-            $eventTicketType->ticketType = $_TicketType->ticketType ?? '';
-            $eventTicketType->event_id = $eventId;
-            $eventTicketType->type_id = $id;
-            $eventTicketType->tickets = $request->ticket['quantity'][$i];
-            $eventTicketType->price = $request->ticket['price'][$i];
-            $eventTicketType->platform = 0;
-            $eventTicketType->userId = auth()->id();
-            $eventTicketType->save();
-            $total += $request->ticket['quantity'][$i];
+        //     $eventTicketType = new EventTicketType();
+        //     $eventTicketType->ticketType = $_TicketType->ticketType ?? '';
+        //     $eventTicketType->event_id = $eventId;
+        //     $eventTicketType->type_id = $id;
+        //     $eventTicketType->tickets = $request->ticket['quantity'][$i];
+        //     $eventTicketType->price = $request->ticket['price'][$i];
+        //     $eventTicketType->platform = 0;
+        //     $eventTicketType->userId = auth()->id();
+        //     $eventTicketType->save();
+        //     $total += $request->ticket['quantity'][$i];
 
-            $i += 1;
-        }
+        //     $i += 1;
+        // }
 
         
-        // $txtSeatingPlan = json_encode($seatingPlan, true);
-        // $eventDetails->seatingplan = $txtSeatingPlan;
+        // // $txtSeatingPlan = json_encode($seatingPlan, true);
+        // // $eventDetails->seatingplan = $txtSeatingPlan;
 
-        $eventDetails->numberOfTickets = $total;
-        $eventDetails->save();
+        // $eventDetails->numberOfTickets = $total;
+        // $eventDetails->save();
         
 
 
