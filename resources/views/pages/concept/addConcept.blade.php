@@ -1,6 +1,74 @@
 @extends('layout.parent')
 @push('script')
 <script type="text/javascript">
+	const input = document.getElementById("gallery_input");
+	const container = document.getElementById("gallery_container");
+	const orderInput = document.getElementById("image_order");
+
+	let filesArray = [];
+
+	input.addEventListener("change", (e) => {
+		filesArray = Array.from(e.target.files); 
+		renderImages();
+	});
+
+	function renderImages() {
+		container.innerHTML = "";
+
+		filesArray.forEach((file, index) => {
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				const div = document.createElement("div");
+				div.className = "gallery-item position-relative";
+				div.draggable = true;
+				div.dataset.index = index;
+				
+				div.innerHTML = `
+					<button class="remove-btn" onclick="removeImage(${index})">×</button>
+					<img src="${e.target.result}">
+				`;
+				
+				addDragEvents(div);
+				container.appendChild(div);
+			};
+			reader.readAsDataURL(file);
+		});
+
+		updateOrder();
+	}
+
+	function addDragEvents(el) {
+		el.addEventListener("dragstart", () => {
+			el.classList.add("dragging");
+		});
+
+		el.addEventListener("dragend", () => {
+			el.classList.remove("dragging");
+			updateOrder();
+		});
+
+		el.addEventListener("dragover", (e) => {
+			e.preventDefault();
+			const dragging = container.querySelector(".dragging");
+			const siblings = [...container.querySelectorAll(".gallery-item:not(.dragging)")];
+			
+			const nextSibling = siblings.find(sibling => {
+				return e.clientX <= sibling.offsetLeft + sibling.offsetWidth / 2;
+			});
+
+			container.insertBefore(dragging, nextSibling);
+		});
+	}
+
+	function removeImage(index) {
+		filesArray.splice(index, 1);
+		renderImages();
+	}
+
+	function updateOrder() {
+		const order = [...container.children].map(item => item.dataset.index);
+		orderInput.value = JSON.stringify(order);
+	}
 function updateTicketTypes(node) {
 	// let numberOfTickets= document.getElementById("numberOfTickets").value;
 	// numberOfTickets = parseInt(numberOfTickets);
@@ -76,7 +144,7 @@ label {
 					</header>
 					<div class="card-body">
 						<h4>Concept Details</h4>
-						<form method="POST" action="{{route('register_event')}}">
+						<form method="POST" action="{{route('register_event')}}" enctype="multipart/form-data">
 							@csrf
 							<div class="form-row align-items-center">
 								<div class="col-6">
@@ -216,6 +284,34 @@ label {
 
 								<div class="col-12">
 									<hr/>
+									<h4>Event Images</h4>
+									<div class="row">
+										<div class="col-12 mb-3">
+											<label class="form-label">Cover Image</label>
+											<div class="input-group mb-2">
+												<div class="input-group-prepend">
+													<div class="input-group-text"><i class="fa fa-image"></i></div>
+												</div>
+												<input type="file" accept="image/*" class="form-control" id="cover_image" name="cover_image" required>
+											</div>
+											<div id="cover_preview" style="max-width: 200px;"></div>
+										</div>
+
+										<label class="form-label">Upload Event Images</label>
+										<div class="input-group mb-2">
+											<div class="input-group-prepend">
+												<div class="input-group-text"><i class="fa fa-images"></i></div>
+											</div>
+											<input type="file" id="gallery_input" name="gallery_images[]" accept="image/*" multiple class="form-control">
+										</div>
+
+										<div id="gallery_container" class="d-flex flex-wrap" style="gap: 10px;"></div>
+										<input type="hidden" id="image_order" name="image_order">
+									</div>
+								</div>
+
+								<div class="col-12">
+									<hr/>
 									<h4>Concept Organizer</h4>
 									<div class="row" >
 										<div class="col-12">
@@ -340,7 +436,7 @@ label {
 						</form>
 					</div>
 				</section>
-				<div class="modal fade" id="generateTicketsModal" tabindex="-1" role="dialog"
+				<!-- <div class="modal fade" id="generateTicketsModal" tabindex="-1" role="dialog"
 					aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
@@ -358,7 +454,6 @@ label {
 									<input type="hidden" name="eventId" id="eventId">
 								</form>
 								<div id="generateTicketResponse" class="alert d-none mt-3"></div> 
-								<!-- Response will be displayed here -->
 							</div>
 
 							<div class="modal-footer">
@@ -368,11 +463,11 @@ label {
 
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 
-				<div class="modal fade" id="importTicketsModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
-				<div class="modal-dialog" role="document">
+				<!-- <div class="modal fade" id="importTicketsModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="importModalLabel">Import Tickets Sold</h5>
@@ -387,14 +482,14 @@ label {
 								<input type="hidden" name="eventId" id="eventId" value="1"> 
 								<input type="file" class="form-control" name="csvFile" id="csvFile" accept=".csv" required>
 							</form>
-							<div id="importResponse" class="mt-3"></div> <!-- Area to display response -->
+							<div id="importResponse" class="mt-3"></div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 							<button type="button" class="btn btn-primary" id="submitImport">Import</button>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 
 

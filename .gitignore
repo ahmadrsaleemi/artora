@@ -51,3 +51,4 @@ Thumbs.db
 /public/assets/dropzone/*
 /public/assets/nestable/*
 /public/img/*
+/public/uploads/*

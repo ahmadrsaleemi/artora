@@ -49,6 +49,9 @@ class EventController extends Controller
         if (TicketType::count() == 0) {
             return redirect()->back()->with('message', 'Please Add Ticket Types First!');
         }
+
+        $gallery_images = $request->gallery_images;
+        $gallery_images_order = json_decode($request->image_order, true);
         
         $createEvent=new Event;
         $createEvent->title=$request->eventTitle;
@@ -72,6 +75,47 @@ class EventController extends Controller
         $createEvent->userId = auth()->id();
         $createEvent->save();
         $eventId=$createEvent->eid;
+
+        $basePath = "uploads/events/$eventId";
+        if (!file_exists(public_path($basePath)))
+        {
+            mkdir(public_path($basePath), 0777, true);
+        }
+
+        if ($request->hasFile('cover_image'))
+        {
+            $cover = $request->file('cover_image');
+            $coverName = "cover_" . time() . "." . $cover->getClientOriginalExtension();
+            $cover->move(public_path($basePath), $coverName);
+            $createEvent->cover_image = "$basePath/$coverName";
+        }
+
+        $images_path = "";
+
+        if ($request->hasFile('gallery_images'))
+        {
+            $gallery_images = $request->file('gallery_images');
+            foreach ($gallery_images_order as $index)
+            {
+                if (!isset($gallery_images[$index]))
+                {
+                    continue;
+                }
+                
+                $img = $gallery_images[$index];
+
+                $imgName = time() . "_" . uniqid() . "." . $img->getClientOriginalExtension();
+                $img->move(public_path($basePath), $imgName);
+
+                $images_path .= "$basePath/$imgName;";
+
+                echo $images_path . " <br>";
+            }
+        }
+
+        $createEvent->gallery_images = $images_path;
+
+        $createEvent->save();
 
         $eventDetails=new EventDetails;
         $eventDetails->numberOfTickets = isset($request->noOfTickets) && !empty($request->noOfTickets) ? $request->noOfTickets : 0;

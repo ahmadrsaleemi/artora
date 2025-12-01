@@ -179,6 +179,33 @@
         .btn-close-red:hover {
             color: #b02a37;  /* Darker red on hover */
         }
+        .gallery-item {
+            width: 130px;
+            cursor: move;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            padding: 4px;
+            background: white;
+        }
+        .gallery-item.dragging {
+            opacity: 0.5;
+        }
+        .gallery-item img {
+            width: 100%;
+            border-radius: 4px;
+        }
+        .remove-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            border: none;
+            width: 22px;
+            height: 22px;
+            font-size: 12px;
+        }
     </style>
   </head>
 
