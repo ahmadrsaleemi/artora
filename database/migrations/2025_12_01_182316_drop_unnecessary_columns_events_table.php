@@ -28,7 +28,8 @@ class DropUnnecessaryColumnsEventsTable extends Migration
             $table->dropColumn('endDate');
             $table->string('subtitle')->nullable();
             $table->integer('capacity')->nullable();
-            $table->integer('category')->nullable();            
+            $table->integer('category')->nullable();
+            $table->integer('ticketprice')->nullable();      
         });
     }
 
@@ -52,6 +53,10 @@ class DropUnnecessaryColumnsEventsTable extends Migration
             $table->string('event_organizer_social_media')->nullable();
             $table->timestamp('eventDate')->nullable();
             $table->timestamp('endDate')->nullable();
+            $table->dropColumn('subtitle');
+            $table->dropColumn('capacity');
+            $table->dropColumn('category');
+            $table->dropColumn('ticketprice');   
         });
     }
 }
